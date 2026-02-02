@@ -3,172 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangeeth Nidhi | Branch Selector</title>
+    <title>SML Group | Smart RD Portal</title>
     <style>
         :root {
-            --fed-blue: #003366;
-            --fed-orange: #ff9933;
-            --bg-glass: rgba(255, 255, 255, 0.98);
+            --sml-blue: #003366;
+            --sml-orange: #ff9933;
+            --glass-bg: rgba(255, 255, 255, 0.98);
         }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #001a33 0%, #003366 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            margin: 0; padding: 15px; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
         }
-        .portal-card {
-            background: var(--bg-glass);
-            width: 100%;
-            max-width: 480px;
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            text-align: center;
+        .container {
+            background: var(--glass-bg);
+            width: 100%; max-width: 480px;
+            padding: 25px; border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
         }
-        .logo-area h1 { color: var(--fed-blue); font-size: 1.5rem; margin: 0; text-transform: uppercase; }
-        .logo-area p { color: var(--fed-orange); font-weight: 800; font-size: 0.85rem; margin-bottom: 25px; }
+        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--sml-orange); padding-bottom: 15px; }
+        .header h1 { color: var(--sml-blue); font-size: 1.3rem; margin: 0; font-weight: 900; }
         
-        select {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: 2px solid #cbd5e1;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--fed-blue);
-            margin-bottom: 20px;
-            outline: none;
+        .login-box input {
+            width: 100%; padding: 16px; border: 2px solid #cbd5e1;
+            border-radius: 12px; font-size: 1.1rem; font-weight: 700; outline: none; box-sizing: border-box;
+        }
+        .btn-primary {
+            width: 100%; background: var(--sml-blue); color: white; border: none;
+            padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 15px;
         }
 
-        .display-area {
-            background: #fff;
-            padding: 25px;
-            border-radius: 16px;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 1px solid #e2e8f0;
+        .branch-card {
+            background: #fff; border: 1px solid #e2e8f0; padding: 20px;
+            border-radius: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-
-        /* Instruction Badge Styling */
-        .payment-badge {
-            margin-bottom: 15px;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            display: none;
-        }
-        .rd-only { background: #fff1f2; color: #e11d48; border: 1px solid #fda4af; }
-        .rd-fd { background: #f0fdf4; color: #16a34a; border: 1px solid #86efac; }
-
-        #qr-container img { width: 240px; height: 240px; margin-bottom: 10px; }
+        .branch-title { color: var(--sml-blue); font-weight: 900; font-size: 1.1rem; margin-bottom: 12px; display: block; }
         
-        .upi-label { font-family: monospace; color: #475569; font-size: 0.9rem; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        .data-table td { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-weight: 700; font-size: 0.9rem; }
+        .amt { text-align: right; color: var(--sml-blue); }
 
-        .download-btn {
-            background: var(--fed-blue);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            display: none;
-            transition: 0.2s;
+        .instruction {
+            padding: 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 800;
+            text-align: center; margin-bottom: 15px; text-transform: uppercase;
         }
-        .download-btn:hover { background: var(--fed-orange); }
+        .rd-only { background: #fff1f2; color: #be123c; }
+        .rd-fd { background: #f0fdf4; color: #15803d; }
+
+        .qr-container { text-align: center; position: relative; }
+        .qr-container img { width: 220px; height: 220px; cursor: pointer; border-radius: 12px; transition: 0.2s; }
+        .qr-container img:active { transform: scale(0.95); }
+        .qr-hint { font-size: 0.65rem; color: #64748b; margin-top: 5px; font-weight: 600; }
+
+        .dl-btn {
+            background: white; color: var(--sml-blue); border: 1px solid var(--sml-blue);
+            padding: 8px 16px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
+            cursor: pointer; margin-top: 10px; width: 100%; transition: 0.2s;
+        }
+        .dl-btn:hover { background: #f8fafc; }
     </style>
 </head>
 <body>
 
-<div class="portal-card">
-    <div class="logo-area">
-        <h1>Sangeeth Nidhi Ltd</h1>
-        <p>Branch QR Directory</p>
+<div class="container">
+    <div id="login-view">
+        <div class="header"><h1>SANGEETH NIDHI LTD</h1><p style="margin:0; font-size:0.7rem; color:#64748b; font-weight:800;">SECURE PAYMENT GATEWAY</p></div>
+        <input type="text" id="rdInput" placeholder="Enter RD Number">
+        <button class="btn-primary" onclick="handleLogin()">LOGIN</button>
     </div>
 
-    <select id="branchSelect" onchange="updatePortal()">
-        <option value="">-- Choose Branch (12 Total) --</option>
-        <option value="sangeeth5399@fbl|ALAPPUZHA|RD">Alappuzha</option>
-        <option value="sangeeth123@fbl|ALUVA|RD">Aluva</option>
-        <option value="sangeethnidhi@fbl|ANGAMALY|RD">Angamaly</option>
-        <option value="11840200019871|EDAPPALLY|BOTH">Edappally (RD & FD)</option>
-        <option value="sangeeth12429@fbl|KOLLAM|RD">Kollam</option>
-        <option value="sangeethnidhi22@fbl|KOTHAMANGALAM|RD">Kothamangalam</option>
-        <option value="sangeethnidhi79@fbl|MEPARAMBU|RD">Meparambu</option>
-        <option value="sangeeth2022@fbl|PALLURUTHY|RD">Palluruthy</option>
-        <option value="sangeetnidhi264@fbl|PARIPALLY|RD">Paripally</option>
-        <option value="sangeethnidhi1@fbl|PERUMBAVOOR|RD">Perumbavoor</option>
-        <option value="sangeethnidhi23@fbl|THIRUVALLA|RD">Thiruvalla</option>
-        <option value="vkdsangeeth2022@fbl|VADAKKEKAD|RD">Vadakkekad</option>
-    </select>
-
-    <div class="display-area">
-        <div id="badge" class="payment-badge"></div>
-        <div id="qr-container">
-            <p style="color: #94a3b8; margin-top: 150px;">Select a branch to view QR</p>
+    <div id="dashboard-view" style="display: none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 id="custName" style="margin:0; font-size:1.1rem; color:var(--sml-blue);"></h2>
+            <button onclick="location.reload()" style="background:none; border:none; color:#dc2626; font-weight:800; cursor:pointer; font-size:0.75rem;">LOGOUT</button>
         </div>
-        <div class="upi-label" id="upiLabel"></div>
-        <button class="download-btn" id="dlBtn" onclick="downloadQR()">Download QR Image</button>
+        <div id="content"></div>
     </div>
 </div>
 
 <script>
-    function updatePortal() {
-        const select = document.getElementById('branchSelect');
-        const badge = document.getElementById('badge');
-        const qrContainer = document.getElementById('qr-container');
-        const upiLabel = document.getElementById('upiLabel');
-        const btn = document.getElementById('dlBtn');
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3IOti332kkfNuBJvi1IvgVs1n0BSfKyEFDEoNCgHNRae7nm8HSABiFbJmuXACDu8z4V5KFSxEwhv/pub?gid=0&single=true&output=csv";
 
-        if (!select.value) {
-            badge.style.display = 'none';
-            qrContainer.innerHTML = '<p style="color: #94a3b8; margin-top: 150px;">Select a branch to view QR</p>';
-            upiLabel.innerText = '';
-            btn.style.display = 'none';
-            return;
-        }
+    const branchData = {
+        "ALAPUZHA": { upi: "sangeeth5399@fbl", type: "RD" },
+        "ALUVA": { upi: "sangeeth123@fbl", type: "RD" },
+        "Angamaly": { upi: "nidhisangeeth@fbl", type: "RD" },
+        "COCHIN": { upi: "sangeethnidhy@fbl", type: "BOTH" },
+        "Kollam": { upi: "sangeeth12429@fbl", type: "RD" },
+        "KOTHAMANGALAM": { upi: "sangeethnidhi22@fbl", type: "RD" },
+        "Meparambu": { upi: "sangeethnidhi79@fbl", type: "RD" },
+        "PALLURUTHY": { upi: "sangeeth2022@fbl", type: "RD" },
+        "Paripally": { upi: "sangeetnidhi264@fbl", type: "RD" },
+        "PERUMBAVOOR": { upi: "sangeethnidhi1@fbl", type: "RD" },
+        "Thiruvalla": { upi: "sangeethnidhi23@fbl", type: "RD" },
+        "VADAKKEKAD": { upi: "vkdsangeeth2022@fbl", type: "RD" }
+    };
 
-        const [upi, name, type] = select.value.split('|');
-        
-        // Update Badge
-        badge.style.display = 'block';
-        if (type === 'BOTH') {
-            badge.innerText = "RD & FD Payments Allowed";
-            badge.className = "payment-badge rd-fd";
-        } else {
-            badge.innerText = "RD Payment Only";
-            badge.className = "payment-badge rd-only";
-        }
-
-        // Generate QR (using a high-quality API)
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=upi://pay?pa=${upi}&pn=Sangeeth%20Nidhi%20Limited&cu=INR`;
-        qrContainer.innerHTML = `<img src="${qrUrl}" id="activeQr" alt="${name} QR">`;
-        upiLabel.innerText = upi;
-        btn.style.display = 'block';
+    function parseCSV(text) {
+        const lines = text.split(/\r?\n/);
+        return lines.map(line => {
+            const result = []; let current = ''; let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') inQuotes = !inQuotes;
+                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+                else current += char;
+            }
+            result.push(current.trim()); return result;
+        });
     }
 
-    function downloadQR() {
-        const img = document.getElementById('activeQr');
-        const select = document.getElementById('branchSelect');
-        const name = select.value.split('|')[1];
+    async function handleLogin() {
+        const val = document.getElementById('rdInput').value.trim();
+        if(!val) return;
+        const res = await fetch(CSV_URL);
+        const data = parseCSV(await res.text());
+        const user = data.find(r => r[1] === val);
+        if(!user) return alert("Not found");
+
+        const name = user[4];
+        const accounts = data.filter(r => r[4] === name);
+        const grouped = accounts.reduce((acc, curr) => {
+            const b = curr[0]; if(!acc[b]) acc[b] = [];
+            acc[b].push(curr); return acc;
+        }, {});
+
+        render(name, grouped);
+    }
+
+function render(name, grouped) {
+    document.getElementById('login-view').style.display = 'none';
+    document.getElementById('dashboard-view').style.display = 'block';
+    document.getElementById('custName').innerText = name;
+    const container = document.getElementById('content');
+    container.innerHTML = '';
+
+    for (const [branch, accs] of Object.entries(grouped)) {
+        const config = branchData[branch] || branchData["ALAPUZHA"];
+        const card = document.createElement('div');
+        card.className = 'branch-card';
+        card.id = `card-${branch.replace(/\s+/g, '')}`;
         
-        fetch(img.src).then(res => res.blob()).then(blob => {
+        const formatDueStmt = (depDateStr) => {
+            if(!depDateStr) return "N/A";
+            const day = depDateStr.split('-')[0];
+            const j = day % 10, k = day % 100;
+            if (j == 1 && k != 11) return day + "st";
+            if (j == 2 && k != 12) return day + "nd";
+            if (j == 3 && k != 13) return day + "rd";
+            return day + "th";
+        };
+
+        card.innerHTML = `
+            <span class="branch-title">${branch}</span>
+            <table class="data-table">
+                ${accs.map((a, index) => `
+                    <tr>
+                        <td style="width: 30px;">
+                            <input type="checkbox" 
+                                class="acc-check" 
+                                data-branch="${branch}" 
+                                data-rd="${a[1]}" 
+                                data-amt="${a[3].replace(/[",]/g,'')}" 
+                                onchange="updateBranchQR('${branch}')">
+                        </td>
+                        <td>
+                            RD: ${a[1]} <br>
+                            <small style="color:#64748b; font-weight:600;">
+                                Due on ${formatDueStmt(a[2])} of Every month
+                            </small>
+                            <br><small style="color:#94a3b8">A/C: ${a[5]}</small>
+                        </td>
+                        <td class="amt">₹ ${a[3].replace(/"/g,'')}</td>
+                    </tr>
+                `).join('')}
+            </table>
+            <div class="instruction ${config.type==='BOTH'?'rd-fd':'rd-only'}">
+                ${config.type==='BOTH'?'RD & FD Allowed':'RD Payment Only'}
+            </div>
+            <div class="qr-container" id="qr-area-${branch.replace(/\s+/g, '')}">
+                <p style="color:#94a3b8; font-size:0.8rem; margin:20px 0; font-style:italic;">
+                    Select account(s) above to generate payment QR
+                </p>
+            </div>
+        `;
+        container.appendChild(card);
+        // We do NOT call updateBranchQR(branch) here so it stays empty
+    }
+}
+
+function updateBranchQR(branch) {
+    const safeBranchId = branch.replace(/\s+/g, '');
+    const card = document.getElementById(`card-${safeBranchId}`);
+    const checks = card.querySelectorAll('.acc-check:checked');
+    const qrArea = document.getElementById(`qr-area-${safeBranchId}`);
+    const config = branchData[branch] || branchData["ALAPUZHA"];
+    
+    let selectedRDs = [];
+    let totalAmt = 0;
+    checks.forEach(c => {
+        selectedRDs.push(c.dataset.rd);
+        totalAmt += parseFloat(c.dataset.amt);
+    });
+
+    // If nothing is selected, show the placeholder instruction
+    if (selectedRDs.length === 0) {
+        qrArea.innerHTML = `
+            <p style="color:#94a3b8; font-size:0.8rem; margin:20px 0; font-style:italic;">
+                Select account(s) above to generate payment QR
+            </p>`;
+        return;
+    }
+
+    const rdNote = selectedRDs.join(',');
+    const upiUri = `upi://pay?pa=${config.upi}&pn=Sangeeth%20Nidhi&tn=RD_${rdNote}&am=${totalAmt}&cu=INR&mc=0000`;
+    const genericIntent = `intent://pay?pa=${config.upi}&pn=Sangeeth%20Nidhi&tn=RD_${rdNote}&am=${totalAmt}&cu=INR&mc=0000#Intent;scheme=upi;end`;
+    const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(upiUri)}`;
+
+    qrArea.innerHTML = `
+        <div style="margin: 15px 0 10px 0; padding: 10px; background: #f0f9ff; border-radius: 12px; border: 1px solid #bae6fd;">
+            <span style="font-size:0.75rem; color:#0369a1; display:block; font-weight:700;">Total Amount Selected</span>
+            <span style="font-size:1.4rem; font-weight:900; color:var(--sml-blue);">₹ ${totalAmt.toLocaleString('en-IN')}</span>
+        </div>
+        <img src="${qrImgUrl}" onclick="window.location.href='${genericIntent}'" alt="QR" style="cursor: pointer; width:200px; border: 1px solid #e2e8f0; padding: 5px; background: white; border-radius:8px;">
+        <div class="qr-hint">Tap QR to Pay via App</div>
+        <button class="dl-btn" onclick="downloadImage('${qrImgUrl}', '${branch}')">Download QR for Gallery</button>
+    `;
+}
+
+
+    function downloadImage(url, branch) {
+        fetch(url).then(r => r.blob()).then(blob => {
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `${name}_SangeethNidhi_QR.png`;
+            a.download = `SML_${branch}_QR.png`;
             a.click();
         });
     }
 </script>
-
 </body>
 </html>
